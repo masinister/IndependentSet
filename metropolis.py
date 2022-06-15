@@ -2,16 +2,19 @@ from random import choice, random
 
 def independent_set(G, iter, temp):
     IS = set()
+    neighbors = set()
     for _ in range(iter):
         node = choice(list(G))
-        neighbors = set().union(*[set(G.adj[v]) for v in IS])
         if node in neighbors:
             continue
         if node not in IS:
             IS.add(node)
+            neighbors = neighbors.union(G.adj[node])
             continue
         if random() < temp:
             IS.remove(node)
+            neighbors = set().union(*[set(G.adj[v]) for v in IS])
+    assert list(G.subgraph(IS).edges()) == []
     return IS
 
 if __name__ == '__main__':
