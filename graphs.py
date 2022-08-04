@@ -1,5 +1,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+from random import sample
 
 def reichman_graph(k,m,c):
     "A collection of k (disjoint) pairs of \
@@ -15,6 +16,15 @@ def reichman_graph(k,m,c):
         G = nx.disjoint_union(G, T)
     return G
 
+def planted_IS(n, p, k):
+    "G(n,p) with k random nodes selected and all edges \
+    removed between then"
+    G = nx.gnp_random_graph(n,p)
+    IS = G.subgraph(sample(G.nodes, int(k)))
+    G.remove_edges_from(IS.edges)
+    return G
+
 if __name__ == '__main__':
-    nx.draw(reichman_graph(3,3,1))
-    plt.show()
+    # nx.draw(reichman_graph(3,2,1))
+    nx.draw(planted_IS(1000,0.5,5))
+    # plt.show()
